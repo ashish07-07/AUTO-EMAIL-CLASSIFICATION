@@ -1,23 +1,18 @@
-import { google } from "googleapis";
-import { NEXT_AUTH } from "@/app/config/auth";
 import { getServerSession } from "next-auth";
+import { NEXT_AUTH } from "@/app/config/auth";
+import { google } from "googleapis";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   const session = await getServerSession(NEXT_AUTH);
-
-  console.log("Session Object:", session);
-
   if (session && session.user && session.user.accessToken) {
     const accessToken = session.user.accessToken;
+    console.log(session);
 
-    console.log("Printing the access token:");
-    console.log(accessToken);
+    const oAuth2client = new google.auth.OAuth2();
+    oAuth2client.setCredentials({ access_token: accessToken });
 
-    const oAuth2Client = new google.auth.OAuth2();
-    oAuth2Client.setCredentials({ access_token: accessToken });
-
-    const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
+    const gmail = google.gmail({ version: "v1", auth: oAuth2client });
 
     try {
       const response = await gmail.users.messages.list({
@@ -28,102 +23,65 @@ export async function GET() {
 
       const messages = response.data.messages || [];
 
-      console.log("Messages:", messages);
-
-      const emailDetails= await Promise.all(
-
-        messages.map(async function (message)
+    const emailDetails= await Promise.all(
+      messages.map(async (message)=>
       {
-            return (
-                         
-               const msg = await gmail.users.messages.get({
-                  userId:'me',
-                  id:message.id
-               })
+              if (message.id)
+                {
+                      try 
+                      {
+                            const msg=await gmail.users.messages.get({
 
-            )
+                              userId:"me",
+                              id:message.id
+
+                            });
+
+                            const headers= msg.data.payload?.headers;
+                            const subjectheader= headers?.find(header=>header.name==='Subject');
+                            const fromHeader=headers?.find(header=>header.name==='From');
+                            const subject=subjectheader?subjectheader.value:'No Subject';
+                            let from = 'Unknown Sender';
+
+                            if (fromHeader)
+                              {
+                                  const match = fromHeader.value?.match(/<(.+?)>1)
+                              }
+
+
+                      }
+                }
       })
 
-      )
+    )
 
-      // return NextResponse.json({
-      //   response,
-      // });
+      return NextResponse.json(
+        {
+          messages,
+        },
+        {
+          status: 200,
+        }
+      );
     } catch (e) {
-      console.error("error found in the code ");
-      return NextResponse.json({
-        msg: "error",
-      });
+      console.error(e);
+      return NextResponse.json(
+        {
+          error: "Failed to fetch messages",
+        },
+        {
+          status: 500,
+        }
+      );
     }
   } else {
     return NextResponse.json(
-      { error: "Access token not found" },
-      { status: 400 }
+      {
+        error: "No session",
+      },
+      {
+        status: 401,
+      }
     );
   }
 }
-
-// import { google } from "googleapis";
-// import { NEXT_AUTH } from "@/app/config/auth";
-// import { getServerSession } from "next-auth";
-// import { NextResponse } from "next/server";
-
-// export async function GET() {
-//   const session = await getServerSession(NEXT_AUTH);
-
-//   console.log("Session Object:", session);
-
-//   if (session && session.user && session.user.accessToken) {
-//     const accessToken = session.user.accessToken;
-
-//     console.log("Printing the access token:");
-//     console.log(accessToken);
-
-//     const oAuth2Client = new google.auth.OAuth2();
-//     oAuth2Client.setCredentials({ access_token: accessToken });
-
-//     const gmail = google.gmail({ version: "v1", auth: oAuth2Client });
-
-//     try {
-//       const response = await gmail.users.messages.list({
-//         userId: "me",
-//         q: "",
-//         maxResults: 25,
-//       });
-
-//       const messages = response.data.messages || [];
-
-//       console.log("Messages:", messages);
-
-//       // const emailDetails = await Promise.all(
-//       //   messages.map(async  (message) => {
-//       //     const msg = await gmail.users.messages.get({
-//       //       userId: "me",
-//       //       id: message.id,
-//       //     });
-//       //     return msg.data; // returning the data of the email
-//       //   })
-//       // );
-//       const emailDetails = await Promise.all(
-//         messages.map(async (message) => {
-//           const msg = await gmail.users.messages.get({
-//             userId: 'me',
-//             id: message.id,
-//           });
-//       console.log("Email Details:", emailDetails);
-
-//       return NextResponse.json({ emailDetails }, { status: 200 });
-//     } catch (e) {
-//       console.error("Error found in the code:", e);
-//       return NextResponse.json(
-//         { error: "Failed to fetch email details" },
-//         { status: 500 }
-//       );
-//     }
-//   } else {
-//     return NextResponse.json(
-//       { error: "Access token not found" },
-//       { status: 400 }
-//     );
-//   }
-// }
