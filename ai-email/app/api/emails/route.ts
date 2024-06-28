@@ -2,6 +2,12 @@ import { getServerSession } from "next-auth";
 import { NEXT_AUTH } from "@/app/config/auth";
 import { google } from "googleapis";
 import { NextResponse } from "next/server";
+import {
+  formatEmail,
+  getBody,
+  separateHTMLandText,
+  stripHTMLAndCSS,
+} from "./emailFormaters";
 
 export async function GET() {
   const session = await getServerSession(NEXT_AUTH);
@@ -23,41 +29,59 @@ export async function GET() {
 
       const messages = response.data.messages || [];
 
-    const emailDetails= await Promise.all(
-      messages.map(async (message)=>
-      {
-              if (message.id)
-                {
-                      try 
-                      {
-                            const msg=await gmail.users.messages.get({
+      const emailDetails = await Promise.all(
+        messages.map(async (message) => {
+          if (message.id) {
+            try {
+              const msg = await gmail.users.messages.get({
+                userId: "me",
+                id: message.id,
+              });
 
-                              userId:"me",
-                              id:message.id
+              const headers = msg.data.payload?.headers;
+              const subjectheader = headers?.find(
+                (header) => header.name === "Subject"
+              );
+              const fromHeader = headers?.find(
+                (header) => header.name === "From"
+              );
+              const subject = subjectheader
+                ? subjectheader.value
+                : "No Subject";
+              let from = "Unknown Sender";
 
-                            });
-
-                            const headers= msg.data.payload?.headers;
-                            const subjectheader= headers?.find(header=>header.name==='Subject');
-                            const fromHeader=headers?.find(header=>header.name==='From');
-                            const subject=subjectheader?subjectheader.value:'No Subject';
-                            let from = 'Unknown Sender';
-
-                            if (fromHeader)
-                              {
-                                  const match = fromHeader.value?.match(/<(.+?)>1)
-                              }
-
-
-                      }
+              if (fromHeader?.value) {
+                const match = fromHeader.value.match(/<(.+?)>/);
+                if (match) {
+                  from = match[1];
                 }
-      })
+              }
 
-    )
+              const body = getBody(msg.data.payload);
+              const { text, html } = separateHTMLandText(body);
+              const formatedText = formatEmail(text);
+              const sanitizedText = stripHTMLAndCSS(formatedText);
+
+              return {
+                id: message.id,
+                subject,
+                from,
+                body: { text: sanitizedText, html },
+              };
+            } catch (e) {
+              console.error("error fetching the email");
+
+              return NextResponse.json({
+                msg: "error fetching the message",
+              });
+            }
+          }
+        })
+      );
 
       return NextResponse.json(
         {
-          messages,
+          emailDetails,
         },
         {
           status: 200,
