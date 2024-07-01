@@ -15,7 +15,7 @@ export function formatEmail(content: string) {
     .replace(/(.{8,})/g, "$1\n"); // Add line break if line exceeds 8 characters
 }
 
-export function stripHTMLAndCSS(text) {
+export function stripHTMLAndCSS(text: any) {
   // Remove HTML tags
   text = text.replace(/<\/?[^>]+(>|$)/g, "");
   // Remove CSS (style tags and inline styles)
@@ -31,7 +31,7 @@ export function getBody(payload: any) {
   let body = "";
 
   if (payload.parts) {
-    payload.parts.forEach((part) => {
+    payload.parts.forEach((part: any) => {
       if (part.mimeType === "text/plain" && part.body && part.body.data) {
         body += Buffer.from(part.body.data, "base64").toString("utf-8");
       } else if (part.mimeType === "text/html" && part.body && part.body.data) {
