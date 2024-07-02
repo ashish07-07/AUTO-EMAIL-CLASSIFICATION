@@ -5,9 +5,6 @@ export function separateHTMLandText(body: string) {
   return { text, html };
 }
 
-//formatEmail function take the separated plain text from the email body
-//and convert it a readable format by adding proper line breaks and indentation
-
 export function formatEmail(content: string) {
   return content
     .replace(/\n+/g, "\n") // Remove consecutive empty lines

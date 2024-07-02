@@ -10,7 +10,7 @@ const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 export async function classifyEmails(
   emails: EMAIL[]
-): Promise<CATEGORIZED_EMAILS> {
+): Promise<CATEGORIZED_EMAILS2> {
   const categorizedEmails: CATEGORIZED_EMAILS2 = [];
 
   await Promise.all(

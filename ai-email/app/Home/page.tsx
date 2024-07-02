@@ -10,8 +10,6 @@ export default function Home() {
     async function Fetchemails() {
       const response = await axios.get("/api/emails");
 
-      // console.log(response.data.emailDetails);
-
       const data = response.data.emailDetails;
       console.log(data);
 
@@ -30,6 +28,7 @@ export default function Home() {
           if (email) {
             const response = await classifyEmails(email);
             console.log(response);
+            console.log(typeof response);
           }
         }}
       >
