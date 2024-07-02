@@ -1,6 +1,6 @@
 # Email Classification and Automatic Reply to Emails ✨🚀
 
-![Email Classification]('./public/email.png')
+![Email Classification](./public/email.png)
 _alt text_
 
 ## Overview
@@ -14,7 +14,7 @@ Before getting started, ensure you have the following installed:
 - [Node.js and npm](https://nodejs.org/)
 - [Git](https://git-scm.com/)
 - Google Cloud Platform Account with API access enabled: [Create Credentials](https://developers.google.com/workspace/guides/create-credentials)
-- OpenAI API Key: [Sign Up](https://ai.google.dev/gemini-api/docs/api-key)
+- OpenAI API Key: [Sign Up](https://platform.openai.com/signup)
 
 ## Getting Started
 
