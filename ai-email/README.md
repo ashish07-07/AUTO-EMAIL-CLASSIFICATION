@@ -1,6 +1,6 @@
-<!-- # Email Classification and Automatic Reply to Emails ✨🚀
+# Email Classification and Automatic Reply to Emails ✨🚀
 
-![Email Classification](../ai-email/public/email.png)
+![Email Classification]('./public/email.png')
 _alt text_
 
 ## Overview
@@ -60,4 +60,4 @@ Your Next.js application should now be running locally at [http://localhost:3000
 
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Google Cloud Documentation](https://cloud.google.com/docs)
-- [OpenAI API Documentation](https://platform.openai.com/docs) -->
+- [OpenAI API Documentation](https://platform.openai.com/docs)
