@@ -27,24 +27,30 @@ export default function EmailResponder() {
   }, []);
 
   return (
-    <div>
-      This page is for replying to the emails
-      <button
-        onClick={async function () {
-          try {
-            if (emails.length > 0) {
-              await axios.post("/api/replyemails", emails);
-              console.log("Replied to all marketing emails.");
-            } else {
-              console.log("No emails to reply to.");
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md text-center max-w-lg">
+        <h1 className="text-2xl font-bold mb-4">Email Responder</h1>
+        <p className="mb-6 text-gray-700">
+          This page is for replying to the emails.
+        </p>
+        <button
+          onClick={async function () {
+            try {
+              if (emails.length > 0) {
+                await axios.post("/api/replyemails", emails);
+                console.log("Replied to all marketing emails.");
+              } else {
+                console.log("No emails to reply to.");
+              }
+            } catch (error) {
+              console.error("Error replying to emails:", error);
             }
-          } catch (error) {
-            console.error("Error replying to emails:", error);
-          }
-        }}
-      >
-        Reply to all the marketing emails
-      </button>
+          }}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Reply to emails automatically
+        </button>
+      </div>
     </div>
   );
 }
