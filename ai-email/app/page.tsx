@@ -90,7 +90,7 @@ export default function Home() {
               router.push("/Home");
             }}
           >
-            Home button bro
+            Email classifting page
           </button>
         </div>
       </div>
