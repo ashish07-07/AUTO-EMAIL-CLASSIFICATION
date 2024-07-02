@@ -14,7 +14,7 @@ Before getting started, ensure you have the following installed:
 - [Node.js and npm](https://nodejs.org/)
 - [Git](https://git-scm.com/)
 - Google Cloud Platform Account with API access enabled: [Create Credentials](https://developers.google.com/workspace/guides/create-credentials)
-- OpenAI API Key: [Sign Up](https://platform.openai.com/signup)
+- OpenAI API Key: [Sign Up](https://ai.google.dev/gemini-api/docs/api-key)
 
 ## Getting Started
 
