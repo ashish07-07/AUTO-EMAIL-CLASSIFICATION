@@ -1,6 +1,6 @@
 # Email Classification and Automatic Reply to Emails ✨🚀
 
-![Email Classification](../REACHINBOX-AI/ai-email/public/email.png)
+![Email Classification](./public/email.png)
 _alt text_
 
 ## Overview
