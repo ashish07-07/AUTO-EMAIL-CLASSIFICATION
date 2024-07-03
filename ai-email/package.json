@@ -11,12 +11,14 @@
   "dependencies": {
     "@google/generative-ai": "^0.14.0",
     "axios": "^1.7.2",
+    "bullmq": "^5.8.3",
     "googleapis": "^140.0.1",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
     "openai": "^4.52.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "redis": "^4.6.15"
   },
   "devDependencies": {
     "@types/node": "^20",
