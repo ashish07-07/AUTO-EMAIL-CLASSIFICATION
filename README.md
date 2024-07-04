@@ -1,6 +1,9 @@
 # Email Classification and Automatic Reply to Emails ✨🚀
 
-![Email Classification](./public/email.png)
+
+![Email Classification](./ai-email/public/email.png)
+
+
 _alt text_
 
 ## Overview
