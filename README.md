@@ -47,7 +47,8 @@ yarn install
    ```
 2. Fill in your secrets in the `.env.local` file.
 
-![Env File set up](./public/image.png)
+![Email Classification](./ai-email/public/image.png)
+
 
 ### Run Your Project Locally
 
